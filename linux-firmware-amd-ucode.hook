@@ -1,0 +1,13 @@
+[Trigger] 
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = linux-firmware
+
+[Action] 
+Description = Updates the AMD microcode in case is needed.
+When = PostTransaction
+Exec = /usr/bin/su -c "cd /boot && mkdir -p kernel/x86/microcode && cat /lib/firmware/amd-ucode/microcode_amd*.bin > kernel/x86/microcode/AuthenticAMD.bin && echo kernel/x86/microcode/AuthenticAMD.bin | bsdcpio -o -H newc -R 0:0 > amd-ucode.img"
+
+
+

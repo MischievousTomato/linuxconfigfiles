@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install 
+Operation = Upgrade
+Type = Package 
+Target = gpaste
+
+[Action]
+Description = Updates Gpaste properly
+When = PostTransaction
+Exec = /usr/bin/gpaste-client dr 
+
