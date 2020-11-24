@@ -1,0 +1,15 @@
+[Unit]
+
+Description=ZRAM config
+
+[Service]
+
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/bin/bash -c "/usr/sbin/modprobe lz4 && /usr/sbin/modprobe zram"
+ExecStart=/bin/bash -c "/usr/sbin/zramctl -f -a lz4 -s $(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')K -t 8 && /usr/sbin/mkswap /dev/zram0 && /usr/sbin/swapon /dev/zram0"
+ExecStop=/bin/bash -c "/usr/sbin/swapoff /dev/zram0 && /usr/sbin/zramctl -r /dev/zram0 && /usr/sbin/rmmod lz4 && /usr/sbin/rmmod zram"
+
+[Install]
+
+WantedBy=multi-user.target
